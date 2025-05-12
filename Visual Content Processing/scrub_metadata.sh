@@ -26,9 +26,6 @@
 #
 # -----------------------------------------------------------------------------
 
-# Create the output directory if it doesn't exist
-mkdir -p scrubbed_images
-
 # Get the total number of images to process (only original images)
 directory="${1:-.}"
 total_images=$(find "$directory" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.tiff" \) | grep -v '\.cleaned' | wc -l)
@@ -63,19 +60,19 @@ process_image() {
     local img="$1"
     local img_basename=$(basename "$img")
     local uuid=$(uuidgen)
-    local output="scrubbed_images/${uuid}.jpg"
+    local output="${directory}/${uuid}.jpg"
 
     # Define temporary filenames
-    local temp1="scrubbed_images/temp1_${img_basename}"
-    local temp2="scrubbed_images/temp2_${img_basename}"
-    local temp3="scrubbed_images/temp3_${img_basename}"
+    local temp1="${directory}/temp1_${img_basename}"
+    local temp2="${directory}/temp2_${img_basename}"
+    local temp3="${directory}/temp3_${img_basename}"
 
     # Skip if scrubbed image already exists (this should not happen with UUID renaming)
     if [ -f "$output" ]; then
         return 1
     fi
 
-    # Step 1: Copy original image to scrubbed_images directory
+    # Step 1: Copy original image to a temporary file
     cp "$img" "$temp1"
 
     # Step 2: Use mat2 to remove metadata (suppress output)
@@ -105,11 +102,14 @@ process_image() {
         return 1
     fi
 
-    # Move the scrubbed image to the output directory
+    # Move the scrubbed image to the original directory with a unique name
     mv "$temp3" "$output"
 
     # Clean up temporary files
     rm -f "$temp3"
+
+    # Delete the original image to prevent duplicates
+    rm -f "$img"
 
     # Increment progress counter
     ((counter++))
@@ -122,4 +122,4 @@ find "$directory" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png"
 done
 
 # Final message
-echo -e "\nMetadata removal complete. Scrubbed images are in the 'scrubbed_images' folder."
+echo -e "\nMetadata removal complete. Scrubbed images are in the original directory."
