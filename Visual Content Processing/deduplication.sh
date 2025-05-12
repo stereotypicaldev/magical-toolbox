@@ -6,7 +6,7 @@
 #
 # Usage
 #
-#   ./duplicate_removal.sh [directory]
+#   ./deduplication.sh [directory]
 #
 # Arguments
 #
@@ -14,7 +14,7 @@
 #
 # Example
 #
-#   ./duplicate_removal.sh /path/to/images
+#   ./deduplication.sh /path/to/images
 #
 # -----------------------------------------------------------------------------
 
