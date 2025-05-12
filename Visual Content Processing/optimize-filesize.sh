@@ -1,17 +1,20 @@
 #!/bin/bash
 
 # -----------------------------------------------------------------------------
-# Description: This script is designed to optimize images in a specified directory, converts JPEG images to progressive format, 
-# compresses the images with specified quality settings using jpegoptim for JPEGs and advpng/pngcrush for PNGs.
+# Description: This script optimizes image files in the specified directory.
+#              It converts JPEG images to progressive format, compresses
+#              the images with specified quality settings using jpegoptim
+#              for JPEGs and advpng/pngcrush for PNGs.
 #
-#
+# -----------------------------------------------------------------------------
 # Usage
 #
 #   ./optimize-filesize.sh [directory]
 #
 # Arguments
 #
-#   directory: Optional - Defaults to the current directory if not provided.
+#   directory: Optional - The directory to process. Defaults to the current
+#              directory if not provided.
 #
 # Example
 #
@@ -42,7 +45,7 @@ if [[ ! -d "$dir" ]]; then
 fi
 
 # Navigate to the specified directory
-cd "$dir" || exit 1
+cd "$dir" || error_exit "Failed to navigate to directory '$dir'."
 
 # Get a list of all the JPEG and PNG files in the directory and subdirectories
 images=($(find . -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" \)))
@@ -57,26 +60,22 @@ fi
 optimize_image() {
   local img="$1"
   
-  # Validate image exists
+  # Validate if the image exists
   if [[ ! -f "$img" ]]; then
     return 1
   fi
 
   local base_name=$(basename "$img")
-
-  # Step 1: Remove all metadata and make the image progressive
-  jpegoptim --all-progressive --strip-all --max=70 "$img" &>/dev/null || return 1
-
-  # Step 2: Further optimization with jpegoptim
-  jpegoptim --strip-all --max=60 "$img" &>/dev/null || return 1
-
-  # Step 3: Additional optimization with advpng (if the image is PNG)
-  if [[ "$img" == *.png ]]; then
-    advpng -z4 "$img" &>/dev/null || return 1
+  
+  # Step 1: Remove all metadata and make the image progressive for JPEGs
+  if [[ "$img" == *.jpg || "$img" == *.jpeg ]]; then
+    jpegoptim --all-progressive --strip-all --max=70 "$img" &>/dev/null || return 1
+    jpegoptim --strip-all --max=60 "$img" &>/dev/null || return 1
   fi
 
-  # Step 4: Further optimization with pngcrush (if the image is PNG)
+  # Step 2: Additional optimization for PNG images
   if [[ "$img" == *.png ]]; then
+    advpng -z4 "$img" &>/dev/null || return 1
     pngcrush -rem alla -ow "$img" &>/dev/null || return 1
   fi
 
@@ -88,10 +87,11 @@ for ((i = 0; i < total_images; i++)); do
   img="${images[$i]}"
   
   if ! optimize_image "$img"; then
-    echo -ne "\nWarning: Skipping image '$img' due to an error.\n"
+    # Skipping image without printing extra details
+    continue
   fi
 
-  # Print progress on the same line
+  # Print progress on the same line, overwriting previous progress
   echo -ne "Processed $((i + 1))/$total_images: $img\r"
 done
 
