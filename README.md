@@ -32,19 +32,19 @@ This repository focuses on scripts that help streamline workflows and automate e
 
 The **Visual Content Processing** folder contains various specialized scripts for working with images in magical ways. Here's a glimpse of the spells you'll find:
 
-   #### 🧙‍♂️ Deduplication 🔍
+   #### 🧙‍♂️ Deduplication
 
    Automatically detect and remove duplicate images from a folder of your choice.
 
-   #### ⚡ Optimize File Size 📉
+   #### ⚡ Optimize File Size
 
    Shrink image file sizes using efficient optimization algorithms — perfect for saving disk space, speeding up websites, or sharing files more easily.
 
-   #### 🔮 Randomize 🌀
+   #### 🌀 Randomize
 
    Rename images to randomized UUIDs — great for anonymizing or avoiding predictable file names.
 
-   #### 🧹 Scrub Metadata 🧑‍🔬
+   #### 🧹 Scrub Metadata
 
    Strip images of all metadata (EXIF, IPTC, etc.) to protect privacy and keep only the raw pixels.
 
