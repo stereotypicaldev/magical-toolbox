@@ -1,5 +1,24 @@
 #!/bin/bash
 
+# -----------------------------------------------------------------------------
+# Description: This script is designed to optimize images in a specified directory, converts JPEG images to progressive format, 
+# compresses the images with specified quality settings using jpegoptim for JPEGs and advpng/pngcrush for PNGs.
+#
+#
+# Usage
+#
+#   ./optimize-filesize.sh [directory]
+#
+# Arguments
+#
+#   directory: Optional - Defaults to the current directory if not provided.
+#
+# Example
+#
+#   ./optimize-filesize.sh /path/to/images
+#
+# -----------------------------------------------------------------------------
+
 # Enable strict error handling
 set -euo pipefail
 
