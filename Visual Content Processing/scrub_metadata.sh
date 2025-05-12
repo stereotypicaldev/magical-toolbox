@@ -1,5 +1,31 @@
 #!/bin/bash
 
+# -----------------------------------------------------------------------------
+#
+# Description: This script scrubs metadata from image files (.jpg, .jpeg, .png, 
+#              .gif, .tiff) in the specified directory and renames the images 
+#              to unique UUIDs. The script performs the following actions:
+#              1. Scrubs metadata using mat2, exiftool, and ImageMagick.
+#              2. Renames image files to unique UUIDs to avoid filename collisions.
+#
+# Usage
+#
+#   ./scrub_metadata.sh [directory]
+#
+# Arguments
+#
+#   directory: Optional. The directory to process. Defaults to the current
+#              directory if not provided.
+#
+# Example:
+#
+#   ./scrub_metadata.sh /path/to/images
+#
+# The script will process all images in the provided directory (or the current
+# directory by default), scrub their metadata, and rename them to unique UUIDs.
+#
+# -----------------------------------------------------------------------------
+
 # Create the output directory if it doesn't exist
 mkdir -p scrubbed_images
 
