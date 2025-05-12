@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # -----------------------------------------------------------------------------
-# Script Name: generate_uuid.sh
 # Description: Renames image files (.jpg, .jpeg, .png) in the specified
 #              directory (or current directory by default) to unique UUIDs.
 #              The UUIDs are 256-bit cryptographically secure values formatted
@@ -10,19 +9,16 @@
 #
 # Usage
 #
-#
-#   ./generate_uuid.sh [directory]
-#
+#   ./randomize-image-names.sh [directory]
 #
 # Arguments
 #
 #   directory: Optional. The directory to process. Defaults to the current
 #              directory if not provided.
 #
+# Example
 #
-# Example:
-#
-#   ./generate_uuid.sh /path/to/images
+#   ./randomize-image-names.sh /path/to/images
 # -----------------------------------------------------------------------------
 
 # Exit on errors, unset variables, and failed pipelines
