@@ -1,5 +1,5 @@
 <p align="center">
-  # Magical Toolbox ✨
+  Magical Toolbox ✨
 </p>
 
 Welcome to **Magical Toolbox** — your enchanted collection of scripts for all things miscellaneous! Whether you're looking to deduplicate images, create password-protected zip containers, or scrub away pesky metadata, this toolbox is brimming with the magic you need to handle random tasks with ease. ✨
