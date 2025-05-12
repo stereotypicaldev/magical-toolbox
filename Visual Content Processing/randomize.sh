@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # -----------------------------------------------------------------------------
+#
 # Description: Renames image files (.jpg, .jpeg, .png) in the specified
 #              directory (or current directory by default) to unique UUIDs.
 #              The UUIDs are 256-bit cryptographically secure values formatted
 #              with dashes, ensuring no filename collisions.
 #
-#
 # Usage
 #
-#   ./randomize-image-names.sh [directory]
+#   ./randomize.sh [directory]
 #
 # Arguments
 #
@@ -18,7 +18,7 @@
 #
 # Example
 #
-#   ./randomize-image-names.sh /path/to/images
+#   ./randomize.sh /path/to/images
 # -----------------------------------------------------------------------------
 
 # Exit on errors, unset variables, and failed pipelines
