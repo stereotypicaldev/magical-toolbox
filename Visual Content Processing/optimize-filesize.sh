@@ -2,9 +2,8 @@
 
 # -----------------------------------------------------------------------------
 # Description: This script optimizes image files in the specified directory.
-#              It converts JPEG images to progressive format, compresses
-#              the images with specified quality settings using jpegoptim
-#              for JPEGs and advpng/pngcrush for PNGs.
+#              It converts JPEG images to progressive format and compresses
+#              them using jpegoptim for JPEGs and advpng/pngcrush for PNGs.
 #
 # -----------------------------------------------------------------------------
 # Usage
@@ -25,9 +24,9 @@
 # Enable strict error handling
 set -euo pipefail
 
-# Function to print error message and exit with non-zero status
+# Function to handle and exit on errors with a custom message
 error_exit() {
-  echo "Error: $1"
+  echo "Error: $1" >&2
   exit 1
 }
 
@@ -59,24 +58,30 @@ fi
 # Function to optimize a single image
 optimize_image() {
   local img="$1"
-  
-  # Validate if the image exists
+
+  # Ensure the image exists and is a file
   if [[ ! -f "$img" ]]; then
     return 1
   fi
 
-  local base_name=$(basename "$img")
-  
-  # Step 1: Remove all metadata and make the image progressive for JPEGs
+  # Handle JPEG images
   if [[ "$img" == *.jpg || "$img" == *.jpeg ]]; then
-    jpegoptim --all-progressive --strip-all --max=70 "$img" &>/dev/null || return 1
-    jpegoptim --strip-all --max=60 "$img" &>/dev/null || return 1
+    if ! jpegoptim --all-progressive --strip-all --max=70 "$img" &>/dev/null; then
+      return 1
+    fi
+    if ! jpegoptim --strip-all --max=60 "$img" &>/dev/null; then
+      return 1
+    fi
   fi
 
-  # Step 2: Additional optimization for PNG images
+  # Handle PNG images
   if [[ "$img" == *.png ]]; then
-    advpng -z4 "$img" &>/dev/null || return 1
-    pngcrush -rem alla -ow "$img" &>/dev/null || return 1
+    if ! advpng -z4 "$img" &>/dev/null; then
+      return 1
+    fi
+    if ! pngcrush -rem alla -ow "$img" &>/dev/null; then
+      return 1
+    fi
   fi
 
   return 0
@@ -87,8 +92,7 @@ for ((i = 0; i < total_images; i++)); do
   img="${images[$i]}"
   
   if ! optimize_image "$img"; then
-    # Skipping image without printing extra details
-    continue
+    continue  # Skip images that failed to optimize
   fi
 
   # Print progress on the same line, overwriting previous progress
