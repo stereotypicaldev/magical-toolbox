@@ -8,7 +8,7 @@ In this repository, we focus on using scripts that help you streamline workflows
 
 ## 📜 Table of Contents
 - [✨ Overview](#-overview)
-- [Categories]
+- [Categories](#-)
   - [🖼️ Visual Content Processing](#-visual-content-processing)
 - [📥 Installation](#-installation)
 - [🚀 Usage](#-usage)
