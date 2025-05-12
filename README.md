@@ -1,4 +1,6 @@
-# Magical Toolbox 🧰✨
+<p align="center">
+  # Magical Toolbox ✨
+</p>
 
 Welcome to **Magical Toolbox** — your enchanted collection of scripts for all things miscellaneous! Whether you're looking to deduplicate images, create password-protected zip containers, or scrub away pesky metadata, this toolbox is brimming with the magic you need to handle random tasks with ease. ✨
 
@@ -10,7 +12,7 @@ This repository focuses on scripts that help streamline workflows and automate e
 
 - [✨ Overview](#-overview)
 - [📁 Categories](#-categories)
-  - [🖼️ Visual Content Processing](#-visual-content-processing)
+  - [Visual Content Processing](#-visual-content-processing)
 - [📥 Installation](#-installation)
 - [🚀 Usage](#-usage)
 - [💬 Contributing](#-contributing)
@@ -30,21 +32,21 @@ This repository focuses on scripts that help streamline workflows and automate e
 
 The **Visual Content Processing** folder contains various specialized scripts for working with images in magical ways. Here's a glimpse of the spells you'll find:
 
-#### 🧙‍♂️ Deduplication 🔍
+   #### 🧙‍♂️ Deduplication 🔍
 
-Automatically detect and remove duplicate images from a folder of your choice.
+   Automatically detect and remove duplicate images from a folder of your choice.
 
-#### ⚡ Optimize File Size 📉
+   #### ⚡ Optimize File Size 📉
 
-Shrink image file sizes using efficient optimization algorithms — perfect for saving disk space, speeding up websites, or sharing files more easily.
+   Shrink image file sizes using efficient optimization algorithms — perfect for saving disk space, speeding up websites, or sharing files more easily.
 
-#### 🔮 Randomize 🌀
+   #### 🔮 Randomize 🌀
 
-Rename images to randomized UUIDs — great for anonymizing or avoiding predictable file names.
+   Rename images to randomized UUIDs — great for anonymizing or avoiding predictable file names.
 
-#### 🧹 Scrub Metadata 🧑‍🔬
+   #### 🧹 Scrub Metadata 🧑‍🔬
 
-Strip images of all metadata (EXIF, IPTC, etc.) to protect privacy and keep only the raw pixels.
+   Strip images of all metadata (EXIF, IPTC, etc.) to protect privacy and keep only the raw pixels.
 
 ---
 
