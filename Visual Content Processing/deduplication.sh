@@ -18,8 +18,8 @@
 #
 # -----------------------------------------------------------------------------
 
-set -euo pipefail
-IFS=$'\n\t'
+set -euo pipefail  # Enable strict error handling
+IFS=$'\n\t'        # Set Internal Field Separator for word splitting
 
 # Default settings
 DIRECTORY="${1:-.}"
@@ -37,6 +37,12 @@ trap cleanup EXIT
 log() {
   echo "$1" | tee -a "$LOG_FILE"
 }
+
+# Final summary function
+final_summary() {
+  log "Duplicate removal complete. Total files deleted: $DELETED_COUNT"
+}
+trap final_summary EXIT
 
 # Check for required dependencies
 check_dependencies() {
@@ -111,9 +117,6 @@ main() {
 
   # Step 2: Remove perceptual duplicates
   remove_visual_duplicates
-
-  # Final summary
-  log "Duplicate removal complete. Total files deleted: $DELETED_COUNT"
 }
 
 # Run the main function
