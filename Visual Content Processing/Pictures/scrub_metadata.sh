@@ -1,125 +1,119 @@
 #!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
-# -----------------------------------------------------------------------------
-#
-# Description: This script scrubs metadata from image files (.jpg, .jpeg, .png, 
-#              .gif, .tiff) in the specified directory and renames the images 
-#              to unique UUIDs. The script performs the following actions:
-#              1. Scrubs metadata using mat2, exiftool, and ImageMagick.
-#              2. Renames image files to unique UUIDs to avoid filename collisions.
-#
-# Usage
-#
-#   ./scrub_metadata.sh [directory]
-#
-# Arguments
-#
-#   directory: Optional. The directory to process. Defaults to the current
-#              directory if not provided.
-#
-# Example:
-#
-#   ./scrub_metadata.sh /path/to/images
-#
-# The script will process all images in the provided directory (or the current
-# directory by default), scrub their metadata, and rename them to unique UUIDs.
-#
-# -----------------------------------------------------------------------------
+# Temporary file handling
+TMP_FILES=""
 
-# Get the total number of images to process (only original images)
-directory="${1:-.}"
-total_images=$(find "$directory" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.tiff" \) | grep -v '\.cleaned' | wc -l)
-
-# Check if there are no images
-if [ "$total_images" -eq 0 ]; then
-    echo "No images found to process."
+# Error and security handling
+error_exit() {
+    echo "$1" >&2
     exit 1
-fi
+}
 
-# Set up a counter to track progress
-counter=0
+# Trap to clean up temp files on exit or interruption
+cleanup() {
+    if [[ -n "${TMP_FILES:-}" ]]; then
+        rm -f $TMP_FILES 2>/dev/null || true
+    fi
+}
+trap cleanup EXIT INT TERM
 
-# Function to display progress bar
-show_progress() {
-    local progress=$(( ($1 * 100) / $2 ))
-    local bar=""
-    local width=50
-    for ((i=0; i<width; i++)); do
-        if [ $i -lt $((progress * width / 100)) ]; then
-            bar="${bar}#"
-        else
-            bar="${bar} "
+# Securely process one image with layered anonymization
+process_image() {
+    local original="$1"
+    local ext="${original##*.}"
+    local filename="$(basename "$original")"
+
+    # Create 4 chained temp files
+    local tmp1 tmp2 tmp3 tmp4
+    tmp1=$(mktemp --suffix=".$ext") || error_exit "Failed to create temporary file 1."
+    tmp2=$(mktemp --suffix=".$ext") || error_exit "Failed to create temporary file 2."
+    tmp3=$(mktemp --suffix=".$ext") || error_exit "Failed to create temporary file 3."
+    tmp4=$(mktemp --suffix=".$ext") || error_exit "Failed to create temporary file 4."
+    TMP_FILES="$tmp1 $tmp2 $tmp3 $tmp4"
+
+    # Ensure the original image is readable and writable
+    [[ ! -r "$original" ]] && error_exit "Cannot read the original file: $original"
+    [[ ! -w "$original" ]] && error_exit "Cannot write to the original file: $original"
+
+    cp -- "$original" "$tmp1" || error_exit "Failed to copy the original file to temporary storage."
+
+    # Step 1: Remove all metadata with exiftool
+    exiftool -overwrite_original -all= "$tmp1" >/dev/null 2>&1 || error_exit "Failed to remove metadata with exiftool."
+
+    # Step 2: Strip ICC profiles, thumbnails, comments using convert
+    convert "$tmp1" -strip "$tmp2" 2>/dev/null || error_exit "Failed to strip image metadata using convert."
+
+    # Step 3: Optimize JPEG (if applicable)
+    if [[ "$ext" =~ ^[jJ][pP][eE]?[gG]$ ]]; then
+        cp "$tmp2" "$tmp3"
+        jpegoptim --quiet --strip-all --max=85 "$tmp3" >/dev/null 2>&1 || error_exit "Failed to optimize JPEG: $tmp3"
+    else
+        cp "$tmp2" "$tmp3"
+    fi
+
+    # Step 4: Deep anonymization using MAT2
+    cp "$tmp3" "$tmp4"
+    mat2 --inplace "$tmp4" >/dev/null 2>&1 || error_exit "Failed to anonymize the file using MAT2."
+
+    # Step 5: Remove JPEG-specific GPS/location data
+    if [[ "$ext" =~ ^[jJ][pP][eE]?[gG]$ ]]; then
+        jhead -purejpg "$tmp4" >/dev/null 2>&1 || error_exit "Failed to remove GPS/location data with jhead."
+    fi
+
+    # Only after all steps succeed, replace original
+    cp -- "$tmp4" "$original" || error_exit "Failed to overwrite original file with anonymized version."
+
+    # Clean up temp files explicitly
+    rm -f "$tmp1" "$tmp2" "$tmp3" "$tmp4"
+    TMP_FILES=""
+}
+
+# Graphical progress bar
+draw_progress_bar() {
+    local current="$1"
+    local total="$2"
+    local file="$3"
+    local width=30
+    local percent=$((100 * current / total))
+    local filled=$((width * current / total))
+    local empty=$((width - filled))
+    local bar
+    bar="$(printf "%0.s█" $(seq 1 $filled))"
+    bar+="$(printf "%0.s░" $(seq 1 $empty))"
+    printf "\r\033[KProgress: [%s] %3d%% (%d/%d) Processing: %s" \
+        "$bar" "$percent" "$current" "$total" "$(basename "$file")"
+}
+
+# Process all images recursively
+scrub_metadata() {
+    local dir="$1"
+    [[ ! -d "$dir" ]] && error_exit "'$dir' is not a directory."
+
+    # Find image files
+    mapfile -t images < <(find "$dir" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.tiff" \))
+    local total="${#images[@]}"
+    [[ "$total" -eq 0 ]] && echo "No images found." && exit 0
+
+    echo "Found $total image(s). Starting metadata scrub..."
+    local count=0
+
+    for file in "${images[@]}"; do
+        count=$((count + 1))
+        draw_progress_bar "$count" "$total" "$file"
+        if ! process_image "$file"; then
+            printf "\nWarning: Failed to scrub %s\n" "$file" >&2
         fi
     done
-    # Print the progress bar with percentage and current photo number
-    printf "\r[%-50s] %d%% - Processing image %d of %d" "$bar" "$progress" "$1" "$2"
+
+    printf "\r\033[KMetadata scrubbing complete.\n"
 }
 
-# Function to process an image
-process_image() {
-    local img="$1"
-    local img_basename=$(basename "$img")
-    local uuid=$(uuidgen)
-    local output="${directory}/${uuid}.jpg"
-
-    # Define temporary filenames
-    local temp1="${directory}/temp1_${img_basename}"
-    local temp2="${directory}/temp2_${img_basename}"
-    local temp3="${directory}/temp3_${img_basename}"
-
-    # Skip if scrubbed image already exists (this should not happen with UUID renaming)
-    if [ -f "$output" ]; then
-        return 1
-    fi
-
-    # Step 1: Copy original image to a temporary file
-    cp "$img" "$temp1"
-
-    # Step 2: Use mat2 to remove metadata (suppress output)
-    if ! mat2 "$temp1" > /dev/null 2>&1; then
-        rm -f "$temp1"
-        return 1
-    fi
-    mv "${temp1%.*}.cleaned.${temp1##*.}" "$temp1"
-
-    # Step 3: Use exiftool to remove all metadata (suppress output)
-    if ! exiftool -all= -overwrite_original "$temp1" > /dev/null 2>&1; then
-        rm -f "$temp1"
-        return 1
-    fi
-    mv "$temp1" "$temp2"
-
-    # Step 4: Use ImageMagick to strip any remaining metadata (suppress output)
-    if ! convert "$temp2" "$temp3" > /dev/null 2>&1; then
-        rm -f "$temp2"
-        return 1
-    fi
-    rm -f "$temp2"
-
-    # Step 5: Check if the scrubbed image is the same as the original
-    if cmp -s "$img" "$temp3"; then
-        rm -f "$temp3"
-        return 1
-    fi
-
-    # Move the scrubbed image to the original directory with a unique name
-    mv "$temp3" "$output"
-
-    # Clean up temporary files
-    rm -f "$temp3"
-
-    # Delete the original image to prevent duplicates
-    rm -f "$img"
-
-    # Increment progress counter
-    ((counter++))
-    show_progress "$counter" "$total_images"
+# Entry point
+main() {
+    [[ $# -ne 1 ]] && echo "Usage: $0 <directory>" >&2 && exit 1
+    scrub_metadata "$1"
 }
 
-# Process images sequentially, one by one
-find "$directory" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.tiff" \) | grep -v '\.cleaned' | while read img; do
-    process_image "$img"
-done
-
-# Final message
-echo -e "\nMetadata removal complete. Scrubbed images are in the original directory."
+main "$@"
