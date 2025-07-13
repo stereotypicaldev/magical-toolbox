@@ -10,15 +10,20 @@
 
 ## 📜 Table of Contents
 
-- [📁 Categories](#-categories)
-  - [Visual Content Processing](#-visual-content-processing)
-- [📥 Installation](#-installation)
-  
+* [📁 Categories](#-categories)
+    * [Visual Content Processing](#-visual-content-processing)
+* [📥 Installation](#-installation)
+* [👀 License](#-license)
+
 ---
 
 ## 📁 Categories
 
-### 🖼️ Visual Content
+Dive into the enchanted realms of the **Magical Toolbox**, where each category offers a unique set of spells to simplify your digital life.
+
+### 🖼️ Visual Content Processing
+
+The **Visual Content Processing** folder is a treasure trove of specialized scripts designed to work wonders with your images:
 
 * #### 🧙‍♂️ Deduplication
 
