@@ -9,20 +9,12 @@
 ---
 
 ## 📜 Table of Contents
-
-- [✨ Overview](#-overview)
 - [📁 Categories](#-categories)
   - [Visual Content Processing](#-visual-content-processing)
 - [📥 Installation](#-installation)
 - [🚀 Usage](#-usage)
 - [💬 Contributing](#-contributing)
 - [👀 License](#-license)
-
----
-
-## ✨ Overview
-
-Welcome to **Magical Toolbox**! This isn't just another collection of scripts; it's your personal arsenal for those tricky, everyday tasks that pop up in your digital life. We've gathered and organized a powerful set of self-contained tools, transforming chaos into seamless automation. Get ready to unleash the magic!
 
 ---
 
