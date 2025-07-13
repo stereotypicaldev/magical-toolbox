@@ -9,6 +9,7 @@
 ---
 
 ## 📜 Table of Contents
+
 - [📁 Categories](#-categories)
   - [Visual Content Processing](#-visual-content-processing)
 - [📥 Installation](#-installation)
