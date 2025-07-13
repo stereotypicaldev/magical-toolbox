@@ -49,7 +49,7 @@ Ready to wield the magic?
 
 1.  **Clone the repository**:
     ```bash
-    git clone [https://github.com/stereotypicaldev/magical-toolbox.git](https://github.com/stereotypicaldev/magical-toolbox.git)
+    git clone https://github.com/stereotypicaldev/magical-toolbox.git
     ```
 2.  **Navigate into the directory**:
     ```bash
