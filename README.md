@@ -48,10 +48,14 @@ The **Visual Content Processing** folder is a treasure trove of specialized scri
 Ready to wield the magic?
 
 1.  **Clone the repository**:
+<br>
+
     ```bash
     git clone https://github.com/stereotypicaldev/magical-toolbox.git
     ```
-2.  **Navigate into the directory**:
+
+3.  **Navigate into the directory**:
+<br>
     ```bash
     cd magical-toolbox
     ```
