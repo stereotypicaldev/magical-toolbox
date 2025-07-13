@@ -94,5 +94,6 @@ Thank you for your contribution! 🧙‍♀️
 
 ## 👀 License
 
-This repository is licensed under the **MIT License**.  
+This repository is licensed under the **MIT License**.
+
 You’re free to use, modify, and share these scripts — just don’t forget your wand. 🪄
