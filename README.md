@@ -27,21 +27,21 @@ Dive into the enchanted realms of the **Magical Toolbox**, where each category o
 
 The **Visual Content Processing** folder is a treasure trove of specialized scripts designed to work wonders with your images. Prepare to be amazed by the spells at your fingertips:
 
-#### 🧙‍♂️ Deduplication
+* #### 🧙‍♂️ Deduplication
 
-Ever find your folders overflowing with identical images? Our **Deduplication** spell automatically detects and removes duplicates, decluttering your digital space with a flick of the wrist.
+    Ever find your folders overflowing with identical images? Our **Deduplication** spell automatically detects and removes duplicates, decluttering your digital space with a flick of the wrist.
 
-#### ⚡ Optimize File Size
+* #### ⚡ Optimize File Size
 
-Shrink your image file sizes with astonishing efficiency! Our **Optimize File Size** spell employs powerful algorithms, perfect for reclaiming disk space, accelerating website loading times, or making sharing a breeze.
+    Shrink your image file sizes with astonishing efficiency! Our **Optimize File Size** spell employs powerful algorithms, perfect for reclaiming disk space, accelerating website loading times, or making sharing a breeze.
 
-#### 🌀 Randomize
+* #### 🌀 Randomize
 
-Transform predictable filenames into a swirl of unique identifiers. The **Randomize** spell renames images to randomized UUIDs, ideal for anonymizing files or simply adding an element of surprise.
+    Transform predictable filenames into a swirl of unique identifiers. The **Randomize** spell renames images to randomized UUIDs, ideal for anonymizing files or simply adding an element of surprise.
 
-#### 🧹 Scrub Metadata
+* #### 🧹 Scrub Metadata
 
-Protect your privacy with a powerful sweep! Our **Scrub Metadata** spell strips images of all embedded information (EXIF, IPTC, and more), leaving behind only the pure pixels you intend to share.
+    Protect your privacy with a powerful sweep! Our **Scrub Metadata** spell strips images of all embedded information (EXIF, IPTC, and more), leaving behind only the pure pixels you intend to share.
 
 ---
 
