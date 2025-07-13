@@ -13,19 +13,12 @@
 - [📁 Categories](#-categories)
   - [Visual Content Processing](#-visual-content-processing)
 - [📥 Installation](#-installation)
-- [🚀 Usage](#-usage)
-- [💬 Contributing](#-contributing)
-- [👀 License](#-license)
-
+  
 ---
 
 ## 📁 Categories
 
-Dive into the enchanted realms of the **Magical Toolbox**, where each category offers a unique set of spells to simplify your digital life.
-
-### 🖼️ Visual Content Processing
-
-The **Visual Content Processing** folder is a treasure trove of specialized scripts designed to work wonders with your images:
+### 🖼️ Visual Content
 
 * #### 🧙‍♂️ Deduplication
 
@@ -57,31 +50,3 @@ Ready to wield the magic?
     ```bash
     cd magical-toolbox
     ```
-
----
-
-## 🚀 Usage
-
-Each script is designed for intuitive command-line execution, often including built-in documentation or examples. Explore, run, and modify as needed!
-
----
-
-## 💬 Contributing
-
-Want to make this toolbox even more extraordinary? Your contributions are warmly welcomed! ✨
-
-1.  **Fork** the repository.
-2.  **Create a new branch** for your feature or fix.
-3.  **Add your script** and necessary documentation.
-4.  **Update the `README.md`** if new functionality is introduced.
-5.  **Open a Pull Request** with a description of your changes.
-
-Thank you for helping us make the **Magical Toolbox** a truly wondrous resource! 🧙‍♀️
-
----
-
-## 👀 License
-
-This repository is licensed under the **MIT License**.
-
-You're completely free to use, modify, and share these scripts—just don't forget your wand. 🪄
